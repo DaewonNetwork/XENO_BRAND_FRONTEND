@@ -8,8 +8,9 @@ import { detailImageState, imagesState } from "../stores/PreviewAtom";
 
 
 import { ProductImageInfoType } from "@/(FSD)/features/product/ui/ProductImageUpdateContainer";
-import { fetchImageToBlob } from "../uitll/base64toBlob";
+
 import { isUrlState } from "../stores/ProductAtom";
+import { fetchImageToBlob } from "../uitll/fetchImageToBlob";
 
 interface FileInputSharedProps extends ButtonProps {
     inputId: string;

@@ -5,8 +5,9 @@ import Image from "next/image";
 import IconShared from "./IconShared";
 import { useRecoilState } from "recoil";
 import { detailImageState, imagesState } from "../stores/PreviewAtom";
-import { fetchImageToBlob } from "../uitll/base64toBlob";
+
 import { isUrlState } from "../stores/ProductAtom";
+import { fetchImageToBlob } from "../uitll/fetchImageToBlob";
 
 
 interface FileInputSharedProps extends ButtonProps {

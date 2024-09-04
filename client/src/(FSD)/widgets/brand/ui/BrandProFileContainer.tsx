@@ -9,13 +9,13 @@ import ProductImageCheckModal from '@/(FSD)/entities/product/ui/ProductImageChec
 import IconShared from '@/(FSD)/shareds/ui/IconShared'
 import TextMediumShared from '@/(FSD)/shareds/ui/TextMediumShared'
 import { useRouter } from 'next/navigation'
-import BrandProductStockUpdateBtn from './BrandProductStockUpdateBtn'
-
-import BrandProductShippingUpdateBtn from './BrandProductShippingUpdateBtn'
-import BrandProductSalesListBtn from './BrandProductSalesListBtn'
 import UserInfoCard from '@/(FSD)/entities/Brand/ui/UserInfoCard'
-import BrandProductsUpdateImageBtn from './BrandProductsUpdateImageBtn'
-import BrandProductListBtn from './BrandProductListBtn'
+import BrandProductStockUpdateBtn from './button/BrandProductStockUpdateBtn'
+import BrandProductShippingUpdateBtn from './button/BrandProductShippingUpdateBtn'
+import BrandProductListBtn from './button/BrandProductListBtn'
+import BrandProductsUpdateImageBtn from './button/BrandProductsUpdateImageBtn'
+import BrandProductSalesListBtn from './button/BrandProductSalesListBtn'
+
 
 
 const BrandProFileContainer = () => {
@@ -59,8 +59,6 @@ const BrandProFileContainer = () => {
 
             <BrandProductSalesListBtn />
 
-           
-            
             <QuestionBtn />
 
             {/* <DarkModeSelectBtn/> */}

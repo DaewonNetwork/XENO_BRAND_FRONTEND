@@ -4,10 +4,10 @@
 
 import AppFixedBtmBar from "@/(FSD)/widgets/app/ui/AppFixedBtmBar";
 import AppFixedTopBar from "@/(FSD)/widgets/app/ui/AppFixedTopBar";
+import AppNav from "@/(FSD)/widgets/app/ui/AppNav";
 import ProductHeader from "@/(FSD)/widgets/product/ui/ProductHeader";
 
 import React, { useState } from "react";
-import { useRecoilState } from "recoil";
 
 const Layout = ({ children, }: { children: React.ReactNode }) => {
 
@@ -18,6 +18,9 @@ const Layout = ({ children, }: { children: React.ReactNode }) => {
                 <ProductHeader />
             </AppFixedTopBar>
             {children}
+            <AppFixedBtmBar>
+                <AppNav />
+            </AppFixedBtmBar>
           
         </>
     );

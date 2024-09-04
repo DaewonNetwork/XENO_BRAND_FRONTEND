@@ -6,10 +6,9 @@ const Layout = ({ children, }: { children: React.ReactNode }) => {
     return (
         <>
             <AppFixedTopBar>
-                <AppTitleHeader title={"상품 등록하기"} />
+                <AppTitleHeader title={"상품 이미지 수정하기"} />
             </AppFixedTopBar>
             {children}
-            
         </>
     );
 };
