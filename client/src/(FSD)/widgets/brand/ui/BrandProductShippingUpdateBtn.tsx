@@ -86,7 +86,7 @@ const BrandProductShippingUpdateBtn = () => {
     return (
         <>
             <Button style={{ marginBottom: "10px" }} onClick={onOpen} size={"sm"} className="w-full h-[100px] bg-white border-2" radius="none" endContent={<IconShared iconType={isOpen ? "top" : "bottom"} />}><TextMediumShared>
-               상품 운송장 등록하기</TextMediumShared></Button>
+               결제 완료 상품 운송장 등록하기</TextMediumShared></Button>
             <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
                 <ModalContent>
                     {(onClose) => (

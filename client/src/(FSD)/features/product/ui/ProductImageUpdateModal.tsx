@@ -16,9 +16,19 @@ import FileInputShared1 from "@/(FSD)/shareds/ui/FileInputShared1";
 
 import FileDetailImageInputShared from "@/(FSD)/shareds/ui/FileDetailImageInputShared";
 import { useProductImagesReadByProductNumber } from "@/(FSD)/entities/product/api/useProductImagesRead";
-import { UploadImageReadDTO } from "@/(FSD)/widgets/order/ui/OrderInfoListBtn";
+
 import { isUrlState } from "@/(FSD)/shareds/stores/ProductAtom";
 
+interface UploadImageReadDTO {
+    productNumber: string;
+    url_1: string;
+    url_2?: string;
+    url_3?: string;
+    url_4?: string;
+    url_5?: string;
+    url_6?: string;
+    detailUrl?: string;
+}
 
 interface ProductImageCreateModalProps {
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
