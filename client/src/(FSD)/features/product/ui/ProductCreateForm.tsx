@@ -16,6 +16,7 @@ import { useRouter } from "next/navigation";
 import ProductImageCheckModal from "@/(FSD)/entities/product/ui/ProductImageCheckModal";
 import { download, newDownload } from "@/(FSD)/entities/product/api/useProductListExcelDownload";
 import { apiPath } from "@/(FSD)/shareds/fetch/APIpath";
+import { useDisclosure } from "@nextui-org/modal";
 
 
 
@@ -31,13 +32,12 @@ export interface ImageListType {
     detailUrl: string;
 }
 const ProductCreateForm = () => {
-    const router = useRouter();
+    const { isOpen:isOpenModal, onOpen, onClose } = useDisclosure();
+
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [checkOpen, setCheckOpen] = useState<boolean>(false);
     const [index, setIndex] = useState<number>(0);
     const [formBlocks, setFormBlocks] = useState<number[]>([1]); // 초기 블록 하나 추가
-    const [submissionStatus, setSubmissionStatus] = useState<Map<number, boolean>>(new Map()); // 상태를 추적하는 맵
-    const [imageList, setImageList] = useState<ImageListType[]>([])
 
     const { control, handleSubmit, formState: { errors, isValid }, getValues } = useForm({
         resolver: zodResolver(z.object({ productNumber: z.string() })),
@@ -112,7 +112,7 @@ const ProductCreateForm = () => {
 
 
     let accessToken = null;
-    
+
     if (typeof window !== "undefined") {
         accessToken = localStorage.getItem("access_token");
     }
@@ -120,6 +120,15 @@ const ProductCreateForm = () => {
     const addFormBlock = () => {
         setFormBlocks([...formBlocks, formBlocks.length + 1]);
     };
+
+    const removeFormBlock = (index: number) => {
+        setFormBlocks(formBlocks.filter((_:any, i) => i !== index));
+        setProductImages(productImages.filter((_:any, i:any) => i !== index));
+        setProductDetailImage(productDetailImage.filter((_:any, i:any) => i !== index));
+    };
+
+
+
     const handleExcelUpload = async () => {
         if (!excelFile) {
             alert('엑셀 파일을 선택해 주세요.');
@@ -160,39 +169,57 @@ const ProductCreateForm = () => {
     return (
         <>
             {formBlocks.map((block, idx) => (
-                <form key={idx} style={{ display: isOpen && idx === formBlocks.length - 1 ? "none" : "block" }} className={styles.product_create_form} onSubmit={handleSubmit(onSubmit)}>
-                    <TextMediumShared isLabel={true} htmlFor={`productNumber-${idx}`}>품번</TextMediumShared>
-                    <FormInputShared
-                        isClearable
-                        size={"lg"}
-                        variant={"flat"}
-                        isInvalid={!!errors[`productNumber-${idx}`]}
-                        radius={"none"}
-                        errorMessage={errors[`productNumber-${idx}`] && <>{errors[`productNumber-${idx}`]?.message}</>}
-                        name={`productNumber-${idx}`}
-                        control={control}
-                        placeholder={"품번을 입력해주세요."}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                    <form key={idx} style={{ display: isOpen && idx === formBlocks.length - 1 ? "none" : "block" }} className={styles.product_create_form} onSubmit={handleSubmit(onSubmit)}>
+                        <TextMediumShared isLabel={true} htmlFor={`productNumber-${idx}`}>품번</TextMediumShared>
+                        <FormInputShared
+                            isClearable
+                            size={"lg"}
+                            variant={"flat"}
+                            isInvalid={!!errors[`productNumber-${idx}`]}
+                            radius={"none"}
+                            errorMessage={errors[`productNumber-${idx}`] && <>{errors[`productNumber-${idx}`]?.message}</>}
+                            name={`productNumber-${idx}`}
+                            control={control}
+                            placeholder={"품번을 입력해주세요."}
 
-                    />
-                    <TextMediumShared>이미지</TextMediumShared>
-                    <Button
-                        onClick={() => {
-                            setIsOpen(true);
-                            setIndex(idx);
-                        }}
-                        fullWidth size={"lg"} type={"button"} variant={"ghost"}
-                    >
-                        이미지 등록하기
-                    </Button>
-                    {idx === formBlocks.length - 1 && (
-                        <Button
-                            fullWidth size={"lg"} type={"button"} variant={"ghost"}
-                            onClick={addFormBlock}
-                        >
-                            추가 이미지
-                        </Button>
-                    )}
-                </form>
+                        />
+                        <TextMediumShared>이미지</TextMediumShared>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <Button
+                                onClick={() => {
+                                    setIsOpen(true);
+                                    setIndex(idx);
+                                }}
+                                size={"lg"} type={"button"} variant={"ghost"}
+                            >
+                                이미지 등록하기
+                            </Button>
+                            {idx === formBlocks.length - 1 && (
+                                <div style={{ display: 'flex', gap: '8px' }}>
+                                    <Button
+                                        size={"lg"}
+                                        type={"button"}
+                                        variant={"ghost"}
+                                        onClick={addFormBlock}
+                                    >
+                                        추가 이미지
+                                    </Button>
+                                    {formBlocks.length > 1 && (
+                                        <Button
+                                            size={"lg"}
+                                            type={"button"}
+                                            variant={"ghost"}
+                                            onClick={() => removeFormBlock(idx)} // 인덱스에 맞게 삭제 함수 호출
+                                        >
+                                            삭제
+                                        </Button>
+                                    )}
+                                </div>
+                            )}
+                        </div>
+                    </form>
+                </div>
             ))}
             <br></br>
 
@@ -205,52 +232,67 @@ const ProductCreateForm = () => {
                 />
             )}
 
-            {checkOpen && (
+            {isOpenModal && (
                 <ProductImageCheckModal
-                    setCheckOpen={setCheckOpen}
+                isOpen={isOpenModal} 
+                onOpenChange={onClose} 
 
                 />
             )}
 
-            <Button
-                // isDisabled={(!isValid)}
-                fullWidth size={"lg"}
-                type={"button"} color={"primary"}
-                onClick={onSubmit} // 모든 폼 블록을 한 번에 제출
-            >
-                이미지 업로드하기
-            </Button>
-            <br />
-            <Button
-                // isDisabled={(!isValid)}
-                fullWidth size={"lg"} type={"button"} variant={"ghost"}
-                onClick={() => setCheckOpen(true)} // 모든 폼 블록을 한 번에 제출
-            >
-                업로드한 이미지 조회하기
-            </Button>
-            <Button
-                // isDisabled={(!isValid)}
-                fullWidth size={"lg"} type={"button"} variant={"ghost"}
-                onClick={() => newDownload()}
-            >
-                새 엑셀 템플릿 다운받기
-            </Button>
-            <Button
-                // isDisabled={(!isValid)}
-                fullWidth size={"lg"} type={"button"} variant={"ghost"}
-                onClick={() => download()}
-            >
-                나의 상품 목록 엑셀 다운받기
-            </Button>
+            <div style={{ textAlign: 'right', marginTop: '16px' }}>
+                <Button
+                    style={{ marginBottom: "10px", marginRight: '10px' }}
+                    // isDisabled={(!isValid)}
+                    size={"lg"} type={"button"} variant={"ghost"}
+                    onClick={onOpen} // 모든 폼 블록을 한 번에 제출
+                >
+                    업로드한 이미지 조회하기
+                </Button>
+                <Button
+                    isDisabled={(!productImages || !productDetailImage)}
+                    size={"lg"}
+                    type={"button"}
+                    color={"primary"}
 
-            <div>
+                    onClick={onSubmit} // 모든 폼 블록을 한 번에 제출
+                >
+                    이미지 업로드하기
+                </Button>
+
+            </div>
+            <br />
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                <Button
+                    style={{ marginBottom: "10px" }}
+                    // isDisabled={(!isValid)}
+                    size={"lg"} type={"button"} variant={"ghost"}
+                    onClick={() => newDownload()}
+                >
+                    새 엑셀 템플릿 다운받기
+                </Button>
+                <Button
+                    style={{ marginBottom: "10px" }}
+                    // isDisabled={(!isValid)}
+                    size={"lg"} type={"button"} variant={"ghost"}
+                    onClick={() => download()}
+                >
+                    나의 상품 목록 엑셀 다운받기
+                </Button>
+            </div>
+
+            <div style={{ textAlign: 'right', marginTop: '16px' }}>
                 <input
+                    style={{ marginBottom: "10px" }}
                     type="file"
                     accept=".xlsx, .xls"
                     onChange={handleExcelFileChange}
                 />
-                <Button onClick={handleExcelUpload}>엑셀 등록하기</Button>
+                <Button style={{ marginBottom: "10px" }}
+                    isDisabled={(!excelFile)}
+                    size={"lg"} type={"button"} color="primary" onClick={handleExcelUpload}>엑셀 등록하기</Button>
             </div>
+
         </>
     );
 };

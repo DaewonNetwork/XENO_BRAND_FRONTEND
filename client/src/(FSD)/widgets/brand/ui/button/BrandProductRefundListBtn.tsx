@@ -2,16 +2,12 @@
 
 
 import React, { useEffect, useState } from "react";
-import { Listbox, ListboxItem } from "@nextui-org/listbox";
 import { useRouter } from "next/navigation";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from "@nextui-org/modal";
 import { Button } from "@nextui-org/button";
-import { Select, SelectItem } from "@nextui-org/select";
 import IconShared from "@/(FSD)/shareds/ui/IconShared";
 import TextMediumShared from "@/(FSD)/shareds/ui/TextMediumShared";
-import { useRecoilState } from "recoil";
-import { productListState } from "@/(FSD)/shareds/stores/ProductAtom";
-import { paymentCompletedOrderDownload } from "@/(FSD)/entities/product/api/useProductListExcelDownload";
+import { refundOrderExcelDownload } from "@/(FSD)/entities/product/api/useProductListExcelDownload";
 import { apiPath } from "@/(FSD)/shareds/fetch/APIpath";
 interface ProductColorCreateBtnType {
     productId: number;
@@ -19,25 +15,17 @@ interface ProductColorCreateBtnType {
     productName: string;
 }
 
-const BrandProductShippingUpdateBtn = () => {
-
+const BrandProductRefundListBtn = () => {
 
     const router = useRouter();
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
-
-
-
     const [excelFile, setExcelFile] = useState<File | null>(null);
-
 
     const handleExcelFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files[0]) {
             setExcelFile(event.target.files[0]);
         }
     };
-
-
-
 
     let accessToken = null;
     
@@ -56,7 +44,7 @@ const BrandProductShippingUpdateBtn = () => {
         formData.append('excel', excelFile);
 
         try {
-            const response = await fetch(`${apiPath}/api/product/update/stock`, {
+            const response = await fetch(`${apiPath}/api/orders/refund`, {
                 method: 'PUT',
                 headers: {
                     Authorization: `Bearer ${accessToken}`,
@@ -86,20 +74,20 @@ const BrandProductShippingUpdateBtn = () => {
     return (
         <>
             <Button style={{ marginBottom: "10px" }} onClick={onOpen} size={"sm"} className="w-full h-[100px] bg-white border-2" radius="none" endContent={<IconShared iconType={isOpen ? "top" : "bottom"} />}><TextMediumShared>
-               상품 운송장 등록하기</TextMediumShared></Button>
-            <Modal isOpen={isOpen} onOpenChange={onOpenChange} >
+               환불 요청 상품 확인하기</TextMediumShared></Button>
+            <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
                 <ModalContent>
                     {(onClose) => (
                         <>
-                            <ModalHeader className="flex flex-col gap-1">운송장 등록</ModalHeader>
+                            <ModalHeader className="flex flex-col gap-1">환불 요청 상품</ModalHeader>
                             <ModalBody>
                                 <Button
                                     // isDisabled={(!isValid)}
                                     fullWidth size={"lg"} type={"button"} variant={"ghost"}
-                                    onClick={() => paymentCompletedOrderDownload()}
+                                    onClick={() => refundOrderExcelDownload()}
                                     style={{ marginBottom: '16px' }}  // 버튼 아래에 여백 추가
                                 >
-                                    결제 완료 된 주문 목록 다운 받기
+                                    환불 요청 상품 다운로드 받기
                                 </Button>
 
                                 <input
@@ -132,4 +120,4 @@ const BrandProductShippingUpdateBtn = () => {
     );
 };
 
-export default BrandProductShippingUpdateBtn;
+export default BrandProductRefundListBtn;

@@ -11,12 +11,15 @@ import AppFixedTopBar from "@/(FSD)/widgets/app/ui/AppFixedTopBar";
 import TextMediumShared from "@/(FSD)/shareds/ui/TextMediumShared";
 import { useProductUploadImagesRead } from "../api/useProductUploadImagesRead";
 import { ImageListType } from "@/(FSD)/features/product/ui/ProductCreateForm";
+import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@nextui-org/modal";
+import { Card, CardContent } from "@mui/material";
 
 interface ProductImageCheckModalProps {
-    setCheckOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    isOpen: boolean;
+    onOpenChange: () => void;
 }
 
-const ProductImageCheckModal = ({ setCheckOpen }: ProductImageCheckModalProps) => {
+const ProductImageCheckModal = ({ isOpen, onOpenChange }: ProductImageCheckModalProps) => {
     const { data, isError, error, isPending, refetch } = useProductUploadImagesRead();
     const images: ImageListType[] = data || [];
 
@@ -48,67 +51,78 @@ const ProductImageCheckModal = ({ setCheckOpen }: ProductImageCheckModalProps) =
     if (!images) return <></>;
 
     return (
-        <div className={`bg-background ${styles.product_image_create_modal}`}>
-            <AppFixedTopBar>
-                <AppTitleHeader
-                    title={"이미지 조회하기"}
-                    buttons={<Button size={"sm"} isIconOnly onClick={() => setCheckOpen(false)} variant={"light"}><IconShared iconType={"close"} /></Button>}
-                />
-            </AppFixedTopBar>
-            {images.map((image) => (
-                <AppSection key={image.productNumber}>
-                    <AppInner>
-                        <TextMediumShared>품번 : {image.productNumber}</TextMediumShared>
-
-                        <TextMediumShared>상품 이미지</TextMediumShared>
-                        <div className={styles.img_input_box}>
-                            {[
-                                image.url_1, image.url_2, image.url_3, image.url_4, image.url_5, image.url_6
-                            ].map((url, index) => (
-                                <div key={index} className={styles.preview_img_box}>
-                                    {url ? (
-                                        <img src={url} alt={`상품 이미지 ${index + 1}`} />
-                                    ) : (
-                                        <div className={styles.preview_img_box}>
-                                            <TextMediumShared>이미지 없음</TextMediumShared>
-                                        </div>
-                                    )}
-                                </div>
+        <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="4xl">
+        <ModalContent style={{ maxHeight: '80vh', overflowY: 'auto' }}>
+            {(onClose: any) => (
+                <>
+                    <ModalHeader className="flex flex-col gap-1">이미지 조회 | 24시간 내에 상품이 등록되지 않은 이미지는 삭제돼요.</ModalHeader>
+                    <ModalBody>
+                        <div>
+                            {images.map((image) => (
+                                <Card key={image.productNumber} style={{ marginBottom: '16px' }}>
+                                    <CardContent>
+                                        <AppInner>
+                                            <TextMediumShared>품번 : {image.productNumber}</TextMediumShared>
+                                            <br />
+    
+                                            <TextMediumShared>상품 이미지</TextMediumShared>
+                                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', marginBottom: '16px' }}>
+                                                {[
+                                                    image.url_1, image.url_2, image.url_3, image.url_4, image.url_5, image.url_6
+                                                ].map((url, index) => (
+                                                    <div key={index} style={{ width: '100px', height: '100px', overflow: 'hidden', borderRadius: '8px', border: '1px solid #ddd' }}>
+                                                        {url ? (
+                                                            <img src={url} alt={`상품 이미지 ${index + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                                        ) : (
+                                                            <div style={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', border: '1px solid #ddd', borderRadius: '8px' }}>
+                                                                <TextMediumShared>이미지 없음</TextMediumShared>
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                ))}
+                                            </div>
+                                            <div style={{ marginBottom: '16px' }}>
+                                                <Button onClick={() => copyImagesToClipboard([
+                                                    image.url_1, image.url_2, image.url_3, image.url_4, image.url_5, image.url_6
+                                                ])}>
+                                                    이미지 링크 일괄 복사하기
+                                                </Button>
+                                            </div>
+    
+                                            <TextMediumShared>상세 이미지</TextMediumShared>
+                                            {image.detailUrl ? (
+                                                <div style={{ width: '100px', height: '100px', overflow: 'hidden', borderRadius: '8px', border: '1px solid #ddd', marginBottom: '16px' }}>
+                                                    <img src={image.detailUrl} alt="상세 이미지" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                                </div>
+                                            ) : (
+                                                <div style={{ width: '100px', height: '100px', display: 'flex', justifyContent: 'center', alignItems: 'center', border: '1px solid #ddd', borderRadius: '8px', marginBottom: '16px' }}>
+                                                    <TextMediumShared>상세 이미지 없음</TextMediumShared>
+                                                </div>
+                                            )}
+                                            <div >
+                                                <Button onClick={() => copyImagesToClipboard([
+                                                    image.detailUrl
+                                                ])}>
+                                                    상세 이미지 링크 복사하기
+                                                </Button>
+                                            </div>
+                                        </AppInner>
+                                    </CardContent>
+                                </Card>
                             ))}
-
-                            <div>
-                                <Button onClick={() => copyImagesToClipboard([
-                                    image.url_1, image.url_2, image.url_3, image.url_4, image.url_5, image.url_6
-                                ])}>
-                                    이미지 링크 일괄 복사하기
-                                </Button>
-                            </div>
-
-                            <TextMediumShared>상세 이미지</TextMediumShared>
-                            {image.detailUrl ? (
-                                <div className={styles.preview_img_box}>
-                                    <img src={image.detailUrl} alt="상세 이미지" />
-                                </div>
-
-
-                            ) : (
-                                <div className={styles.empty_image_box}>
-                                    <TextMediumShared>상세 이미지 없음</TextMediumShared>
-                                </div>
-                            )}
-
-                            <div>
-                                <Button onClick={() => copyImagesToClipboard([
-                                    image.detailUrl
-                                ])}>
-                                    상세 이미지 링크 복사하기
-                                </Button>
-                            </div>
                         </div>
-                    </AppInner>
-                </AppSection>
-            ))}
-        </div>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button color="danger" variant="light" onClick={onClose}>
+                            닫기
+                        </Button>
+                    </ModalFooter>
+                </>
+            )}
+        </ModalContent>
+    </Modal>
+    
+
     );
 };
 
