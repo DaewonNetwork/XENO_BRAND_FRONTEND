@@ -52,7 +52,7 @@ const BrandProductSalesListBtn = () => {
                             <ModalBody>
 
                                 <DateRangePicker
-                                    label="Date range (controlled)"
+                                    label="기간을 선택해 주세요"
                                     value={value}
                                     onChange={setValue}
                                     visibleMonths={2}

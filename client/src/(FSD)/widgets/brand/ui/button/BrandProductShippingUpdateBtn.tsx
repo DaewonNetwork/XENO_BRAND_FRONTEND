@@ -13,6 +13,8 @@ import { useRecoilState } from "recoil";
 import { productListState } from "@/(FSD)/shareds/stores/ProductAtom";
 import { paymentCompletedOrderDownload } from "@/(FSD)/entities/product/api/useProductListExcelDownload";
 import { apiPath } from "@/(FSD)/shareds/fetch/APIpath";
+import Tippy from '@tippyjs/react';
+import 'tippy.js/dist/tippy.css'; // optional
 interface ProductColorCreateBtnType {
     productId: number;
     productNumber: string;
@@ -24,8 +26,6 @@ const BrandProductShippingUpdateBtn = () => {
 
     const router = useRouter();
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
-
-
 
     const [excelFile, setExcelFile] = useState<File | null>(null);
 
@@ -40,7 +40,7 @@ const BrandProductShippingUpdateBtn = () => {
 
 
     let accessToken = null;
-    
+
     if (typeof window !== "undefined") {
         accessToken = localStorage.getItem("access_token");
     }
@@ -86,12 +86,37 @@ const BrandProductShippingUpdateBtn = () => {
     return (
         <>
             <Button style={{ marginBottom: "10px" }} onClick={onOpen} size={"sm"} className="w-full h-[100px] bg-white border-2" radius="none" endContent={<IconShared iconType={isOpen ? "top" : "bottom"} />}><TextMediumShared>
-               상품 운송장 등록하기</TextMediumShared></Button>
-            <Modal isOpen={isOpen} onOpenChange={onOpenChange} >
+                상품 운송장 등록하기</TextMediumShared></Button>
+            <Modal isOpen={isOpen} onOpenChange={onOpenChange} hideCloseButton>
                 <ModalContent>
                     {(onClose) => (
                         <>
-                            <ModalHeader className="flex flex-col gap-1">운송장 등록</ModalHeader>
+                            <ModalHeader className="flex flex-col gap-1">
+                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                                운송장 등록
+                                <Tippy
+                                    content={
+                                        <div>
+                                            <p><strong>엑셀을 다운로드해 택배사 코드와 운송장 번호를 입력해 주세요.</strong></p>
+                                            <br/>
+                                            <ul>
+                                                <li><strong>CJ대한통운</strong>: <code>kr.cjlogistics</code></li>
+                                                <li><strong>CU 편의점택배</strong>: <code>kr.cupost</code></li>
+                                                <li><strong>우체국택배</strong>: <code>kr.epost</code></li>
+                                                <li><strong>로젠택배</strong>: <code>kr.logen</code></li>
+                                                <li><strong>롯데택배</strong>: <code>kr.lotte</code></li>
+                                                <li><strong>한진택배</strong>: <code>kr.hanjin</code></li>
+                                            </ul>
+                                        </div>
+                                    }
+                                    placement="right"
+                                    theme="light"
+                                    maxWidth={500}  
+                                >
+                                   <Button  variant={"light"}  isIconOnly endContent={<IconShared iconType={"question"} iconSize={"md"}/>} ></Button>
+                                </Tippy>
+                                </div>
+                            </ModalHeader>
                             <ModalBody>
                                 <Button
                                     // isDisabled={(!isValid)}

@@ -13,6 +13,7 @@ import { useRecoilState } from "recoil";
 import { productListState } from "@/(FSD)/shareds/stores/ProductAtom";
 import { stockDownload } from "@/(FSD)/entities/product/api/useProductListExcelDownload";
 import { apiPath } from "@/(FSD)/shareds/fetch/APIpath";
+import Tippy from "@tippyjs/react";
 interface ProductColorCreateBtnType {
     productId: number;
     productNumber: string;
@@ -34,7 +35,7 @@ const BrandProductStockUpdateBtn = () => {
     };
 
     let accessToken = null;
-    
+
     if (typeof window !== "undefined") {
         accessToken = localStorage.getItem("access_token");
     }
@@ -80,11 +81,28 @@ const BrandProductStockUpdateBtn = () => {
         <>
             <Button style={{ marginBottom: "10px" }} onClick={onOpen} size={"sm"} className="w-full h-[100px] bg-white border-2" radius="none" endContent={<IconShared iconType={isOpen ? "top" : "bottom"} />}><TextMediumShared>
                 상품 재고 수정하기</TextMediumShared></Button>
-            <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+            <Modal isOpen={isOpen} onOpenChange={onOpenChange} hideCloseButton>
                 <ModalContent>
                     {(onClose) => (
                         <>
-                            <ModalHeader className="flex flex-col gap-1">재고 수정</ModalHeader>
+                            <ModalHeader className="flex flex-col gap-1">
+                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                                    재고 수정
+                                    <Tippy
+                                        content={
+
+                                            <p><strong>엑셀을 다운로드해 원하는 사이즈의 재고를 수정할 수 있어요. 사이즈 추가를 원하시면 상품 수정하기를 이용해 주세요.</strong></p>
+
+
+                                        }
+                                        placement="top"
+                                        theme="light"
+                                        maxWidth={420}
+                                    >
+                                        <Button variant={"light"} isIconOnly endContent={<IconShared iconType={"question"} iconSize={"md"} />} ></Button>
+                                    </Tippy>
+                                </div>
+                            </ModalHeader>
                             <ModalBody>
                                 <div>
                                     <Button

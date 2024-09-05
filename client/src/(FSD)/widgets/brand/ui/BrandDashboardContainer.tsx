@@ -5,8 +5,7 @@ import React, { useState } from 'react'
 import BrandSalesDashBoard from './BrandSalesDashBoard'
 import AppSection from '../../app/ui/AppSection'
 import AppInner from '../../app/ui/AppInner'
-import BrandSalesCountChart from './BrandSalesCountChart'
-import { useProductImagesReadByProductNumber } from '@/(FSD)/entities/product/api/useProductImagesRead'
+
 import { useRouter } from 'next/navigation'
 
 

@@ -18,7 +18,7 @@ const BrandSalesProductsTop10ChartCard = () => {
         <Card style={{ marginBottom: '16px', textAlign: 'center' }}>
             <CardContent>
                 <Typography variant="h6" gutterBottom>
-                    가장 많이 팔린 상품 10개
+                    가장 많이 팔린 상품
                 </Typography>
                 <ResponsiveContainer width="100%" height={400}>
                     <BarChart data={data}>

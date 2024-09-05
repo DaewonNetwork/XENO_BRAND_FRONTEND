@@ -17,6 +17,7 @@ import BrandProductsUpdateImageBtn from './button/BrandProductsUpdateImageBtn'
 import BrandProductSalesListBtn from './button/BrandProductSalesListBtn'
 import BrandProductRefundListBtn from './button/BrandProductRefundListBtn'
 import { useDisclosure } from '@nextui-org/modal'
+import ProductUpdateBtn from '../../product/ui/ProductUpdateBtn'
 
 
 
@@ -40,6 +41,8 @@ const BrandProFileContainer = () => {
 
             <ProductCreateBtn />
 
+            <ProductUpdateBtn />
+
             <BrandProductStockUpdateBtn />
 
             <BrandProductShippingUpdateBtn />
@@ -56,7 +59,7 @@ const BrandProFileContainer = () => {
 
             <BrandProductSalesListBtn />
 
-            <QuestionBtn />
+            {/* <QuestionBtn /> */}
 
             {/* <DarkModeSelectBtn/> */}
         </>

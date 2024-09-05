@@ -4,8 +4,6 @@ import React, { useEffect } from "react";
 import styles from "@/(FSD)/shareds/styles/ProductStyle.module.scss";
 import AppTitleHeader from "@/(FSD)/widgets/app/ui/AppTitleHeader";
 import { Button } from "@nextui-org/button";
-import IconShared from "@/(FSD)/shareds/ui/IconShared";
-import AppSection from "@/(FSD)/widgets/app/ui/AppSection";
 import AppInner from "@/(FSD)/widgets/app/ui/AppInner";
 import AppFixedTopBar from "@/(FSD)/widgets/app/ui/AppFixedTopBar";
 import TextMediumShared from "@/(FSD)/shareds/ui/TextMediumShared";

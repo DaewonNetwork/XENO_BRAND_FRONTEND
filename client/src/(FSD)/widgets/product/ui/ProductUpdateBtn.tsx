@@ -7,7 +7,7 @@ import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure
 import { Button } from "@nextui-org/button";
 import IconShared from "@/(FSD)/shareds/ui/IconShared";
 import TextMediumShared from "@/(FSD)/shareds/ui/TextMediumShared";
-import { refundOrderExcelDownload } from "@/(FSD)/entities/product/api/useProductListExcelDownload";
+import { download, refundOrderExcelDownload } from "@/(FSD)/entities/product/api/useProductListExcelDownload";
 import { apiPath } from "@/(FSD)/shareds/fetch/APIpath";
 import Tippy from "@tippyjs/react";
 interface ProductColorCreateBtnType {
@@ -16,7 +16,7 @@ interface ProductColorCreateBtnType {
     productName: string;
 }
 
-const BrandProductRefundListBtn = () => {
+const ProductUpdateBtn = () => {
 
     const router = useRouter();
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -45,8 +45,8 @@ const BrandProductRefundListBtn = () => {
         formData.append('excel', excelFile);
 
         try {
-            const response = await fetch(`${apiPath}/api/orders/refund`, {
-                method: 'PUT',
+            const response = await fetch(`${apiPath}/api/product/create`, {
+                method: 'POST',
                 headers: {
                     Authorization: `Bearer ${accessToken}`,
                 },
@@ -75,33 +75,38 @@ const BrandProductRefundListBtn = () => {
     return (
         <>
             <Button style={{ marginBottom: "10px" }} onClick={onOpen} size={"sm"} className="w-full h-[100px] bg-white border-2" radius="none" endContent={<IconShared iconType={isOpen ? "top" : "bottom"} />}><TextMediumShared>
-                환불 요청 상품 확인하기</TextMediumShared></Button>
-            <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+                상품 수정하기</TextMediumShared></Button>
+            <Modal isOpen={isOpen} onOpenChange={onOpenChange} hideCloseButton>
                 <ModalContent>
                     {(onClose) => (
                         <>
                             <ModalHeader className="flex flex-col gap-1"> <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                                환불 요청 상품
+                                상품 수정
                                 <Tippy
                                     content={
-                                        <p><strong>엑셀을 다운로드해 환불 요청중인 상품을 확인할 수 있어요. <br/>실제 반품받은 상품을 확인 후 <br/>해당하는 상품의
-                                            "상품 확인 여부"에 "확인"을 작성해 등록해 주세요.</strong></p>
+                                        <>
+                                            엑셀을 다운로드해 상품을 수정할 수 있어요.<br></br>
+                                           상품 삭제를 원하시면 엑셀 내 해당 상품의 행을 삭제 후 등록해 주세요.
+                                        </>
                                     }
                                     placement="top"
                                     theme="light"
-                                    maxWidth={460}
+                                    maxWidth={500}
                                 >
                                     <Button variant={"light"} isIconOnly endContent={<IconShared iconType={"question"} iconSize={"md"} />} ></Button>
                                 </Tippy>
-                            </div></ModalHeader>
+                            </div>
+
+
+                            </ModalHeader>
                             <ModalBody>
                                 <Button
+                                    style={{ marginBottom: "10px" }}
                                     // isDisabled={(!isValid)}
-                                    fullWidth size={"lg"} type={"button"} variant={"ghost"}
-                                    onClick={() => refundOrderExcelDownload()}
-                                    style={{ marginBottom: '16px' }}  // 버튼 아래에 여백 추가
+                                    size={"lg"} type={"button"} variant={"ghost"}
+                                    onClick={() => download()}
                                 >
-                                    환불 요청 상품 다운로드 받기
+                                    나의 상품 목록 엑셀 다운받기
                                 </Button>
 
                                 <input
@@ -134,4 +139,4 @@ const BrandProductRefundListBtn = () => {
     );
 };
 
-export default BrandProductRefundListBtn;
+export default ProductUpdateBtn;

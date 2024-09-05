@@ -32,7 +32,7 @@ export interface ImageListType {
     detailUrl: string;
 }
 const ProductCreateForm = () => {
-    const { isOpen:isOpenModal, onOpen, onClose } = useDisclosure();
+    const { isOpen: isOpenModal, onOpen, onClose } = useDisclosure();
 
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [checkOpen, setCheckOpen] = useState<boolean>(false);
@@ -122,9 +122,9 @@ const ProductCreateForm = () => {
     };
 
     const removeFormBlock = (index: number) => {
-        setFormBlocks(formBlocks.filter((_:any, i) => i !== index));
-        setProductImages(productImages.filter((_:any, i:any) => i !== index));
-        setProductDetailImage(productDetailImage.filter((_:any, i:any) => i !== index));
+        setFormBlocks(formBlocks.filter((_: any, i) => i !== index));
+        setProductImages(productImages.filter((_: any, i: any) => i !== index));
+        setProductDetailImage(productDetailImage.filter((_: any, i: any) => i !== index));
     };
 
 
@@ -234,8 +234,8 @@ const ProductCreateForm = () => {
 
             {isOpenModal && (
                 <ProductImageCheckModal
-                isOpen={isOpenModal} 
-                onOpenChange={onClose} 
+                    isOpen={isOpenModal}
+                    onOpenChange={onClose}
 
                 />
             )}
@@ -262,24 +262,17 @@ const ProductCreateForm = () => {
 
             </div>
             <br />
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <div style={{ textAlign: 'right', marginTop: '16px' }}>
                 <Button
                     style={{ marginBottom: "10px" }}
                     // isDisabled={(!isValid)}
-                    size={"lg"} type={"button"} variant={"ghost"}
+                    size={"lg"} variant={"ghost"}
                     onClick={() => newDownload()}
                 >
                     새 엑셀 템플릿 다운받기
                 </Button>
-                <Button
-                    style={{ marginBottom: "10px" }}
-                    // isDisabled={(!isValid)}
-                    size={"lg"} type={"button"} variant={"ghost"}
-                    onClick={() => download()}
-                >
-                    나의 상품 목록 엑셀 다운받기
-                </Button>
             </div>
+
 
             <div style={{ textAlign: 'right', marginTop: '16px' }}>
                 <input
