@@ -45,7 +45,7 @@ const ProductUpdateBtn = () => {
         formData.append('excel', excelFile);
 
         try {
-            const response = await fetch(`${apiPath}/api/product/create`, {
+            const response = await fetch(`${apiPath}/api/product/update`, {
                 method: 'POST',
                 headers: {
                     Authorization: `Bearer ${accessToken}`,

@@ -24,7 +24,7 @@ const ProductCreateManualModal = ({ isOpen, onOpenChange }: ProductCreateManualM
             <ModalContent style={{ maxHeight: '80vh', overflowY: 'auto' }}>
                 {(onClose: any) => (
                     <>
-                        <ModalHeader className="flex flex-col gap-1">상품 등록 메뉴얼</ModalHeader>
+                        <ModalHeader className="flex flex-col gap-1">상품 등록 매뉴얼</ModalHeader>
                         <ModalBody>
                             <div style={{ padding: '16px' }}>
 
@@ -65,7 +65,7 @@ const ProductCreateManualModal = ({ isOpen, onOpenChange }: ProductCreateManualM
                                             <td style={{ border: '1px solid #ddd', padding: '8px' }}>카테고리</td>
                                             <td style={{ border: '1px solid #ddd', padding: '8px' }}>필수</td>
                                             <td style={{ border: '1px solid #ddd', padding: '8px' }}>상품이 속하는 상위 카테고리를 작성해 주세요.</td>
-                                            <td style={{ border: '1px solid #ddd', padding: '8px' }}>상의, 하의, 아우터</td>
+                                            <td style={{ border: '1px solid #ddd', padding: '8px' }}>상의, 하의, 아우터, 액세서리</td>
                                         </tr>
                                         <tr>
                                             <td style={{ border: '1px solid #ddd', padding: '8px' }}>D</td>
@@ -73,8 +73,9 @@ const ProductCreateManualModal = ({ isOpen, onOpenChange }: ProductCreateManualM
                                             <td style={{ border: '1px solid #ddd', padding: '8px' }}>필수</td>
                                             <td style={{ border: '1px solid #ddd', padding: '8px' }}>상위 카테고리에 속하는 하위 카테고리를 작성해 주세요.</td>
                                             <td style={{ border: '1px solid #ddd', padding: '8px' }}>상의 - 반팔, 긴팔 <br />
-                                                하의 - 청바지, 반바지, 면, 나일론 <br />
-                                                아우터 - 후드집업, 코트, 바람막이, 패딩, 자켓</td>
+                                                하의 - 청바지, 반바지, 면바지, 나일론 <br />
+                                                아우터 - 후드집업, 코트, 바람막이, 패딩, 자켓<br/>
+                                                액세서리 - 모자, 안경, 가방</td>
                                         </tr>
                                         <tr>
                                             <td style={{ border: '1px solid #ddd', padding: '8px' }}>E</td>
