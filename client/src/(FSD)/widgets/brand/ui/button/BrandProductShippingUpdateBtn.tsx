@@ -56,7 +56,7 @@ const BrandProductShippingUpdateBtn = () => {
         formData.append('excel', excelFile);
 
         try {
-            const response = await fetch(`${apiPath}/api/product/update/stock`, {
+            const response = await fetch(`${apiPath}/api/orders/tracking`, {
                 method: 'PUT',
                 headers: {
                     Authorization: `Bearer ${accessToken}`,
