@@ -15,29 +15,25 @@ import BrandProductShippingUpdateBtn from './button/BrandProductShippingUpdateBt
 import BrandProductListBtn from './button/BrandProductListBtn'
 import BrandProductsUpdateImageBtn from './button/BrandProductsUpdateImageBtn'
 import BrandProductSalesListBtn from './button/BrandProductSalesListBtn'
+import BrandProductRefundListBtn from './button/BrandProductRefundListBtn'
+import { useDisclosure } from '@nextui-org/modal'
+import ProductUpdateBtn from '../../product/ui/ProductUpdateBtn'
 
 
 
 const BrandProFileContainer = () => {
-    const router = useRouter();
-    let accessToken = null;
-    
-    if (typeof window !== "undefined") {
-        accessToken = localStorage.getItem("access_token");
-        if(accessToken == null) {
-            router.push('/auth/signin')
-        }
-    }
 
-    const [checkOpen, setCheckOpen] = useState<boolean>(false);
+    const { isOpen, onOpen, onClose } = useDisclosure();
+   
+
  
     return (
         <>
 
-            {checkOpen && (
+            {isOpen && (
                 <ProductImageCheckModal
-                    setCheckOpen={setCheckOpen}
-
+                    isOpen={isOpen}
+                    onOpenChange={onClose}
                 />
             )}
 
@@ -45,21 +41,25 @@ const BrandProFileContainer = () => {
 
             <ProductCreateBtn />
 
+            <ProductUpdateBtn />
+
             <BrandProductStockUpdateBtn />
 
             <BrandProductShippingUpdateBtn />
 
-            <BrandProductListBtn />
+            <BrandProductRefundListBtn />
 
-            <Button style={{ marginBottom: "10px" }} onClick={() => setCheckOpen(true)} size={"sm"}
-                className="w-full h-[100px] bg-white border-2" radius="none"
-            ><TextMediumShared>업로드한 이미지 조회하기</TextMediumShared></Button>
+            <BrandProductListBtn />
 
             <BrandProductsUpdateImageBtn />
 
+            <Button style={{ marginBottom: "10px" }} onClick={onOpen} size={"sm"}
+                className="w-full h-[100px] bg-white border-2" radius="none"
+            ><TextMediumShared>업로드한 이미지 조회하기</TextMediumShared></Button>
+
             <BrandProductSalesListBtn />
 
-            <QuestionBtn />
+            {/* <QuestionBtn /> */}
 
             {/* <DarkModeSelectBtn/> */}
         </>

@@ -32,7 +32,7 @@ export const useAuthSignup = ({ onSuccess, onError }: MutationType) => {
 
     return useMutation({
         mutationFn: (userData: UserType) => {
-            return fetchData({ path: "/auth/signup/Brand", method: "POST", body: userData, isNotAuthRequired: true })
+            return fetchData({ path: "/auth/signup/brand", method: "POST", body: userData, isNotAuthRequired: true })
         },
         onSuccess: (data: any) => {
             onSuccess(data);

@@ -2,42 +2,31 @@
 
 
 import React, { useEffect, useState } from "react";
-import { Listbox, ListboxItem } from "@nextui-org/listbox";
 import { useRouter } from "next/navigation";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from "@nextui-org/modal";
 import { Button } from "@nextui-org/button";
-import { Select, SelectItem } from "@nextui-org/select";
 import IconShared from "@/(FSD)/shareds/ui/IconShared";
 import TextMediumShared from "@/(FSD)/shareds/ui/TextMediumShared";
-import { useRecoilState } from "recoil";
-import { productListState } from "@/(FSD)/shareds/stores/ProductAtom";
-import { paymentCompletedOrderDownload } from "@/(FSD)/entities/product/api/useProductListExcelDownload";
+import { refundOrderExcelDownload } from "@/(FSD)/entities/product/api/useProductListExcelDownload";
 import { apiPath } from "@/(FSD)/shareds/fetch/APIpath";
-import Tippy from '@tippyjs/react';
-import 'tippy.js/dist/tippy.css'; // optional
+import Tippy from "@tippyjs/react";
 interface ProductColorCreateBtnType {
     productId: number;
     productNumber: string;
     productName: string;
 }
 
-const BrandProductShippingUpdateBtn = () => {
-
+const BrandProductRefundListBtn = () => {
 
     const router = useRouter();
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
-
     const [excelFile, setExcelFile] = useState<File | null>(null);
-
 
     const handleExcelFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files[0]) {
             setExcelFile(event.target.files[0]);
         }
     };
-
-
-
 
     let accessToken = null;
 
@@ -56,7 +45,7 @@ const BrandProductShippingUpdateBtn = () => {
         formData.append('excel', excelFile);
 
         try {
-            const response = await fetch(`${apiPath}/api/product/update/stock`, {
+            const response = await fetch(`${apiPath}/api/orders/refund`, {
                 method: 'PUT',
                 headers: {
                     Authorization: `Bearer ${accessToken}`,
@@ -86,45 +75,33 @@ const BrandProductShippingUpdateBtn = () => {
     return (
         <>
             <Button style={{ marginBottom: "10px" }} onClick={onOpen} size={"sm"} className="w-full h-[100px] bg-white border-2" radius="none" endContent={<IconShared iconType={isOpen ? "top" : "bottom"} />}><TextMediumShared>
-                상품 운송장 등록하기</TextMediumShared></Button>
-            <Modal isOpen={isOpen} onOpenChange={onOpenChange} hideCloseButton>
+                환불 요청 상품 확인하기</TextMediumShared></Button>
+            <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
                 <ModalContent>
                     {(onClose) => (
                         <>
-                            <ModalHeader className="flex flex-col gap-1">
-                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                                운송장 등록
+                            <ModalHeader className="flex flex-col gap-1"> <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                                환불 요청 상품
                                 <Tippy
                                     content={
-                                        <div>
-                                            <p><strong>엑셀을 다운로드해 택배사 코드와 운송장 번호를 입력해 주세요.</strong></p>
-                                            <br/>
-                                            <ul>
-                                                <li><strong>CJ대한통운</strong>: <code>kr.cjlogistics</code></li>
-                                                <li><strong>CU 편의점택배</strong>: <code>kr.cupost</code></li>
-                                                <li><strong>우체국택배</strong>: <code>kr.epost</code></li>
-                                                <li><strong>로젠택배</strong>: <code>kr.logen</code></li>
-                                                <li><strong>롯데택배</strong>: <code>kr.lotte</code></li>
-                                                <li><strong>한진택배</strong>: <code>kr.hanjin</code></li>
-                                            </ul>
-                                        </div>
+                                        <p><strong>엑셀을 다운로드해 환불 요청중인 상품을 확인할 수 있어요. <br/>실제 반품받은 상품을 확인 후 <br/>해당하는 상품의
+                                            "상품 확인 여부"에 "확인"을 작성해 등록해 주세요.</strong></p>
                                     }
-                                    placement="right"
+                                    placement="top"
                                     theme="light"
-                                    maxWidth={500}  
+                                    maxWidth={460}
                                 >
-                                   <Button  variant={"light"}  isIconOnly endContent={<IconShared iconType={"question"} iconSize={"md"}/>} ></Button>
+                                    <Button variant={"light"} isIconOnly endContent={<IconShared iconType={"question"} iconSize={"md"} />} ></Button>
                                 </Tippy>
-                                </div>
-                            </ModalHeader>
+                            </div></ModalHeader>
                             <ModalBody>
                                 <Button
                                     // isDisabled={(!isValid)}
                                     fullWidth size={"lg"} type={"button"} variant={"ghost"}
-                                    onClick={() => paymentCompletedOrderDownload()}
+                                    onClick={() => refundOrderExcelDownload()}
                                     style={{ marginBottom: '16px' }}  // 버튼 아래에 여백 추가
                                 >
-                                    결제 완료 된 주문 목록 다운 받기
+                                    환불 요청 상품 다운로드 받기
                                 </Button>
 
                                 <input
@@ -157,4 +134,4 @@ const BrandProductShippingUpdateBtn = () => {
     );
 };
 
-export default BrandProductShippingUpdateBtn;
+export default BrandProductRefundListBtn;

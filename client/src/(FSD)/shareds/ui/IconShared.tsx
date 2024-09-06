@@ -1,6 +1,6 @@
 import React from "react"
 import { FcGoogle } from "react-icons/fc";
-import { FaApple } from "react-icons/fa";
+import { FaApple, FaRegQuestionCircle } from "react-icons/fa";
 import { RiKakaoTalkFill } from "react-icons/ri";
 import { FaEye, FaEyeSlash, FaStar } from "react-icons/fa6";
 import { IoCloseOutline, IoSettingsSharp, IoSearchOutline, IoBagOutline, IoMenuOutline } from "react-icons/io5";
@@ -89,6 +89,9 @@ const IconShared = ({ iconType, iconSize = "md", className, ...props }: IconType
             break;
         case "cart":
             component = <IoBagOutline />;
+            break;
+        case "question":
+            component = <FaRegQuestionCircle />
             break;
         default:
             component = null;

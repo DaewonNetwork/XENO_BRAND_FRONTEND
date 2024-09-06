@@ -22,7 +22,7 @@ const ReviewInfo = ({ review }: ReviewInfoProps) => {
   
 
     return (
-        <div onClick={_ => router.push(`/reply/create?reviewId=${review.reviewId}`)} className={styles.review_item} style={{marginBottom:"5px"}}>
+        <div onClick={_ => router.push(`/reply/create?reviewId=${review.reviewId}`)} className={styles.review_item} style={{marginBottom:"50px"}}>
             <ItemShared>
                 <AppInner>
                     <div className={styles.review_inner}>
